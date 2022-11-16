@@ -14,6 +14,7 @@ namespace VZTest2.Data
         public DbSet<Option> Options { get; set; }
         public DbSet<Attempt> Attempts { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<OptionAnswer> OptionAnswers { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@{
-    bool logged = false;
-    string name = "";
+    bool logged = ViewData["login"] is string && !string.IsNullOrEmpty((string)ViewData["login"]);
+    string name = (string)ViewData["name"] ?? "";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +18,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">VZTest2</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -47,11 +46,11 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Опросы</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-controller="Theme" asp-action="List" asp-route-Unlock="true"><i class="bi bi-person-fill-lock"></i> Открытые мне</a>
-                                <a class="dropdown-item" asp-controller="Theme" asp-action="List" asp-route-Mine="true"><i class="bi bi-person-fill"></i> Мои опросы</a>
-                                <a class="dropdown-item" asp-controller="Theme" asp-action="List"><i class="bi bi-unlock-fill"></i> Открытый список</a>
-                                <a class="dropdown-item" asp-controller="Theme" asp-action="Search"><i class="bi bi-search"></i> Поиск</a>
-                                <a class="dropdown-item" asp-controller="Theme" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                <a class="dropdown-item" asp-controller="Quiz" asp-action="List" asp-route-Unlock="true"><i class="bi bi-person-fill-lock"></i> Открытые мне</a>
+                                <a class="dropdown-item" asp-controller="Quiz" asp-action="List" asp-route-Mine="true"><i class="bi bi-person-fill"></i> Мои опросы</a>
+                                <a class="dropdown-item" asp-controller="Quiz" asp-action="List"><i class="bi bi-unlock-fill"></i> Открытый список</a>
+                                <a class="dropdown-item" asp-controller="Quiz" asp-action="Search"><i class="bi bi-search"></i> Поиск</a>
+                                <a class="dropdown-item" asp-controller="Quiz" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
                             </div>
                         </li>
                     </ul>
@@ -59,12 +58,10 @@
                         @if (logged)
                         {
                             <li class="nav-item">
-                                <a asp-controller="Auth" asp-action="Profile">@name</a>
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Profile">@name</a>
                             </li>
                             <li class="nav-item">
-                                <form class="form-inline" asp-controller="Auth" asp-action="Logout">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Выход</button>
-                                </form>
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Выход</a>
                             </li>
                         }
                         else

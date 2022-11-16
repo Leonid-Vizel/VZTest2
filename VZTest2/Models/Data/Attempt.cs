@@ -1,4 +1,6 @@
-﻿namespace VZTest2.Models.Data
+﻿using VZTest2.Interfaces;
+
+namespace VZTest2.Models.Data
 {
     public class Attempt : IIndexable
     {

@@ -1,0 +1,29 @@
+﻿@using VZTest2.Models.View;
+@model RegisterModel
+@{
+    ViewData["title"] = "Регистрация";
+}
+
+<setion>
+    <div class="row justify-content-center">
+        <form method="post" class="col-lg-6 col-md-8 col-sm-10 col-12">
+            <h2>@ViewData["title"]</h2>
+            <div class="mb-1">
+                <label asp-for="Login" class="form-label"></label>
+                <input asp-for="Login" class="form-control">
+                <span class="text-danger" asp-validation-for="Login"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control">
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>
+            <button class="btn btn-success w-100">Регистрация</button>
+        </form>
+    </div>
+</setion>
