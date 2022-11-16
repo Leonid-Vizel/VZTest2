@@ -1,15 +1,18 @@
-﻿using VZTest2.Instruments;
+﻿using System.ComponentModel.DataAnnotations;
+using VZTest2.Instruments;
 using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
     public class User : IIndexable
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Login { get; set; }
         public bool AllowCreate { get; set; }
         public bool Admin { get; set; }
+        public string? AvatarFileName { get; set; }
         public string PasswordHash { get; set; }
         public DateTime RegisterTime { get; set; }
 

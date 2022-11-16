@@ -1,0 +1,79 @@
+﻿@using VZTest2.Models.View;
+@using VZTest2.Models.Data;
+@model ProfileModel
+@{
+    ViewData["Title"] = $"Пользователь {Model.User.Name}";
+}
+<style>
+    .avatar-box {
+        width: 160px;
+    }
+
+    .avatar {
+        height: 200px;
+        border: 1px solid #000000;
+        border-radius: 10px;
+    }
+</style>
+
+<section>
+    <div class="row">
+        <div class="col-2">
+            <div class="avatar-box">
+                <div class="avatar">
+                    @if (Model.User.AvatarFileName == null)
+                    {
+                        <div class="d-flex h-100 justify-content-center align-items-center">
+                            Здесь будет аватар :)
+                        </div>
+                    }
+                    else
+                    {
+                        <img class="w-100 h-100" src="~/img/avatars/@Model.User.AvatarFileName"></img>
+                    }
+                </div>
+                @if (Model.Self)
+                {
+                    <a class="btn btn-info w-100 px-2 mt-1" asp-controller="Image" asp-action="LoadAvatar">Загрузить аватар</a>
+                }
+            </div>
+        </div>
+        <div class="col-10">
+            <h1>@Model.User.Name</h1>
+            <div class="form-text">Пользователь платформы с @Model.User.RegisterTime.ToString("dd.MM.yyyy")</div>
+            @if (Model.User.Admin)
+            {
+                <span class="badge rounded-pill bg-danger">Админ</span>
+            }
+            @if (Model.User.AllowCreate)
+            {
+                <span class="badge rounded-pill bg-success">Создатель</span>
+            }
+            <hr>
+            <h2>Достижения:</h2>
+            @if (Model.Achievements.Count > 0)
+            {
+                @foreach (Achievement achievement in Model.Achievements)
+                {
+                    <span class="badge rounded-pill" style="background-color: @achievement.BackColor; color: @achievement.ForeColor;">@achievement.Name</span>
+                }
+            }
+            else
+            {
+                <p>
+                    С сожалению Вы пока ничем не проставились на нашей платформе. Но не волнуйтесь, рано или поздно у Вас это получится :)
+                    <br>
+                    <a asp-controller="Achievement" asp-action="List">Здесь</a> Вы можете посмотреть полный список достижений
+                </p>
+            }
+            <hr>
+            <h2>Статистика:</h2>
+            <h5><b>Создано тестов:</b> @Model.TestCreateCount</h5>
+            <h5><b>Создано тем:</b> @Model.ThemeCreateCount</h5>
+            <h5><b>Создано вопросов:</b> @Model.QuestionCreateCount</h5>
+            <h5><b>Создано опросов:</b> @Model.QuizCreateCount</h5>
+            <h5><b>Тестов пройдено:</b> @Model.TestAttemptCount</h5>
+            <h5><b>Тестов опросов пройдено:</b> @Model.QuizAttemptCount</h5>
+        </div>
+    </div>
+</section>

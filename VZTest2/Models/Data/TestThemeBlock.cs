@@ -1,7 +1,10 @@
-﻿namespace VZTest2.Models.Data
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VZTest2.Models.Data
 {
     public class TestThemeBlock
     {
+        [Key]
         public int Id { get; set; }
         public int Index { get; set; }
         public int TestId { get; set; }

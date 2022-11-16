@@ -7,6 +7,7 @@ namespace VZTest2.Data.UnitOfWorks
     {
         ApplicationDbContext Context { get; set; }
         IRepository<User> UserRepository { get; set; }
+        Task MigrateAsync();
         Task SaveAsync();
     }
 }

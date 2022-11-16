@@ -1,6 +1,8 @@
 ﻿@{
     bool logged = ViewData["login"] is string && !string.IsNullOrEmpty((string)ViewData["login"]);
-    string name = (string)ViewData["name"] ?? "";
+    string name = (string)(ViewData["name"] ?? "");
+    bool create = (bool)(ViewData["create"] ?? false);
+    int id = (int)(ViewData["id"] ?? 0);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +32,10 @@
                                 <a class="dropdown-item" asp-controller="Test" asp-action="List" asp-route-Mine="true"><i class="bi bi-person-fill"></i> Мои тесты</a>
                                 <a class="dropdown-item" asp-controller="Test" asp-action="List"><i class="bi bi-unlock-fill"></i> Открытый список</a>
                                 <a class="dropdown-item" asp-controller="Test" asp-action="Search"><i class="bi bi-search"></i> Поиск</a>
-                                <a class="dropdown-item" asp-controller="Test" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                @if (create)
+                                {
+                                    <a class="dropdown-item" asp-controller="Test" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                }
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -40,7 +45,10 @@
                                 <a class="dropdown-item" asp-controller="Theme" asp-action="List" asp-route-Mine="true"><i class="bi bi-person-fill"></i> Мои темы</a>
                                 <a class="dropdown-item" asp-controller="Theme" asp-action="List"><i class="bi bi-unlock-fill"></i> Открытый список</a>
                                 <a class="dropdown-item" asp-controller="Theme" asp-action="Search"><i class="bi bi-search"></i> Поиск</a>
-                                <a class="dropdown-item" asp-controller="Theme" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                @if (create)
+                                {
+                                    <a class="dropdown-item" asp-controller="Theme" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                }
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -50,7 +58,10 @@
                                 <a class="dropdown-item" asp-controller="Quiz" asp-action="List" asp-route-Mine="true"><i class="bi bi-person-fill"></i> Мои опросы</a>
                                 <a class="dropdown-item" asp-controller="Quiz" asp-action="List"><i class="bi bi-unlock-fill"></i> Открытый список</a>
                                 <a class="dropdown-item" asp-controller="Quiz" asp-action="Search"><i class="bi bi-search"></i> Поиск</a>
-                                <a class="dropdown-item" asp-controller="Quiz" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                @if (create)
+                                {
+                                    <a class="dropdown-item" asp-controller="Quiz" asp-action="Create"><i class="bi bi-plus-circle"></i> Создать</a>
+                                }
                             </div>
                         </li>
                     </ul>
@@ -58,7 +69,7 @@
                         @if (logged)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Profile">@name</a>
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Profile" asp-route-id="@id">@name</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Выход</a>

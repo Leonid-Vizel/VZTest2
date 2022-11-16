@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using VZTest2.Data.UnitOfWorks;
 using VZTest2.Filters;
 using VZTest2.Instruments;
@@ -70,24 +71,46 @@ namespace VZTest2.Controllers
         }
         #endregion
         #region Logout
+        [AuthFilter]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index","Home");
         }
         #endregion
-        #region Profile
-        public IActionResult Profile()
+        #region Migate
+        public async Task<IActionResult> Migrate()
         {
-            return View();
+            await _unitOfWork.MigrateAsync();
+            return RedirectToAction("Login","Auth");
+        }
+        #endregion
+        #region Profile
+        [AuthFilter]
+        public async Task<IActionResult> Profile(int id)
+        {
+            User? foundUser = await _unitOfWork.UserRepository.GetSet().FirstOrDefaultAsync(x=>x.Id == id);
+            if (foundUser == null || foundUser.Id == 0)
+            {
+                return NotFound();
+            }
+            ProfileModel model = new ProfileModel()
+            {
+                User = foundUser,
+                Achievements = new List<Achievement>(),
+                Self = (HttpContext.Session.GetInt32("id") ?? 0) == foundUser.Id
+            };
+            return View(model);
         }
         #endregion
         #region Edit
+        [AuthFilter]
         public IActionResult Edit()
         {
             return View();
         }
         [HttpPost]
+        [AuthFilter]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(object model)
         {
@@ -95,13 +118,24 @@ namespace VZTest2.Controllers
         }
         #endregion
         #region Change Password
+        [AuthFilter]
         public IActionResult ChangePassword()
         {
             return View();
         }
         [HttpPost]
+        [AuthFilter]
         [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(object model)
+        {
+            return View();
+        }
+        #endregion
+        #region Change Avatar
+        [HttpPost]
+        [AuthFilter]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeAvatar(int id, IFormFile avatar)
         {
             return View();
         }

@@ -1,9 +1,11 @@
-﻿using VZTest2.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
     public class Question : IIndexable
     {
+        [Key]
         public int Id { get; set; }
         public Guid ThemeId { get; set; }
         public string Title { get; set; }

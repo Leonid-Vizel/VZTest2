@@ -1,9 +1,11 @@
-﻿using VZTest2.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
     public class Test : IIndexable, ICreatable
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

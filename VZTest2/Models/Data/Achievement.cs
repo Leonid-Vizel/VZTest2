@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
-    public class Option : IIndexable
+    public class Achievement
     {
         [Key]
         public int Id { get; set; }
-        public int QuestionId { get; set; }
-        public int Index { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public string BackColor { get; set; }
+        public string ForeColor { get; set; }
     }
 }

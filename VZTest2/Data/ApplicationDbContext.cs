@@ -16,5 +16,7 @@ namespace VZTest2.Data
         public DbSet<Answer> Answers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<OptionAnswer> OptionAnswers { get; set; }
+        public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<AchievementLink> AchievementLinks { get; set; }
     }
 }
