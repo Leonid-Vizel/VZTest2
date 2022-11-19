@@ -14,12 +14,18 @@
         border: 1px solid #000000;
         border-radius: 10px;
     }
+
+    @@media (max-width: 575px) {
+        .w-xs-100 {
+            width: 100% !important;
+        }
+    }
 </style>
 
 <section>
     <div class="row">
-        <div class="col-2">
-            <div class="avatar-box">
+        <div class="col-lg-2 col-md-3 col-sm-4">
+            <div class="avatar-box w-xs-100">
                 <div class="avatar">
                     @if (Model.User.AvatarFileName == null)
                     {
@@ -38,7 +44,7 @@
                 }
             </div>
         </div>
-        <div class="col-10">
+        <div class="col-lg-10 col-md-9 col-sm-8">
             <h1>@Model.User.Name</h1>
             <div class="form-text">Пользователь платформы с @Model.User.RegisterTime.ToString("dd.MM.yyyy")</div>
             @if (Model.User.Admin)

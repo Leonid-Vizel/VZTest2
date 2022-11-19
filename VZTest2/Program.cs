@@ -16,7 +16,10 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 #endregion
 
 var builder = WebApplication.CreateBuilder(args);
-
+if (!builder.Environment.IsDevelopment())
+{
+    builder.WebHost.UseKestrel().UseContentRoot(Directory.GetCurrentDirectory()).UseUrls("http://*:5000");
+}
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 //Activating Postgres Timestamps
@@ -47,8 +50,16 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromHours(6);
 });
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DeployConnection")));
+}
 builder.Services.AddScoped<IAuthUnitOfWork, AuthUnitOfWork>();
 // Add services to the container.
 var app = builder.Build();
