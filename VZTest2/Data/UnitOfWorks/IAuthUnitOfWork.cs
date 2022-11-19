@@ -3,11 +3,9 @@ using VZTest2.Models.Data;
 
 namespace VZTest2.Data.UnitOfWorks
 {
-    public interface IAuthUnitOfWork
+    public interface IAuthUnitOfWork : IDefaultUnitOfWork
     {
-        ApplicationDbContext Context { get; set; }
         IRepository<User> UserRepository { get; set; }
         Task MigrateAsync();
-        Task SaveAsync();
     }
 }

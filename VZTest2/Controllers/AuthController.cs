@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using VZTest2.Data.UnitOfWorks;
 using VZTest2.Filters;
 using VZTest2.Instruments;
@@ -28,7 +27,7 @@ namespace VZTest2.Controllers
             {
                 return View(model);
             }
-            if (await _unitOfWork.UserRepository.GetSet().AnyAsync(x=>x.Login.ToLower().Equals(model.Login)))
+            if (await _unitOfWork.UserRepository.AnyAsync(x=>x.Login.ToLower().Equals(model.Login)))
             {
                 ModelState.AddModelError("Login","Этот логин уже занят");
                 return View(model);
@@ -60,7 +59,7 @@ namespace VZTest2.Controllers
             {
                 return View(model);
             }
-            User? foundUser = await _unitOfWork.UserRepository.GetSet().FirstOrDefaultAsync(x=>x.Login.Equals(model.Login.ToLower()));
+            User? foundUser = await _unitOfWork.UserRepository.FirstOrDefaultAsync(x=>x.Login.Equals(model.Login.ToLower()));
             if (foundUser == null)
             {
                 ModelState.AddModelError("Password", "Неверный пароль или почта!");
@@ -89,7 +88,7 @@ namespace VZTest2.Controllers
         [AuthFilter]
         public async Task<IActionResult> Profile(int id)
         {
-            User? foundUser = await _unitOfWork.UserRepository.GetSet().FirstOrDefaultAsync(x=>x.Id == id);
+            User? foundUser = await _unitOfWork.UserRepository.FirstOrDefaultAsync(x=>x.Id == id);
             if (foundUser == null || foundUser.Id == 0)
             {
                 return NotFound();

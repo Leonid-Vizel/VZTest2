@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
-    public class Question : IIndexable
+    public class Question
     {
         [Key]
         public int Id { get; set; }
-        public Guid ThemeId { get; set; }
+        public int ThemeId { get; set; }
         [Required(ErrorMessage = "Укажите название!")]
         [MinLength(3, ErrorMessage = "Минимальная длина названия - 3 символа!")]
         [MaxLength(100, ErrorMessage = "Максимальная длина названия - 100 символов!")]

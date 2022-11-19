@@ -60,7 +60,9 @@ else
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DeployConnection")));
 }
+builder.Services.AddScoped<IDefaultUnitOfWork, DefaultUnitOfWork>();
 builder.Services.AddScoped<IAuthUnitOfWork, AuthUnitOfWork>();
+builder.Services.AddScoped<IThemeUnitOfWork, ThemeUnitOfWork>();
 // Add services to the container.
 var app = builder.Build();
 

@@ -4,9 +4,8 @@ using VZTest2.Models.Data;
 
 namespace VZTest2.Data.UnitOfWorks
 {
-    public class AuthUnitOfWork : IAuthUnitOfWork
+    public class AuthUnitOfWork : DefaultUnitOfWork, IAuthUnitOfWork
     {
-        public ApplicationDbContext Context { get; set; }
         public IRepository<User> UserRepository { get; set; }
 
         public AuthUnitOfWork(ApplicationDbContext db)
@@ -20,11 +19,6 @@ namespace VZTest2.Data.UnitOfWorks
             {
                 await Context.Database.MigrateAsync();
             }
-        }
-
-        public async Task SaveAsync()
-        {
-            await Context.SaveChangesAsync();
         }
     }
 }

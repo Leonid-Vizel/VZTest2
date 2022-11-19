@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
-    public class Answer : IIndexable
+    public class Answer
     {
         [Key]
         public int Id { get; set; }

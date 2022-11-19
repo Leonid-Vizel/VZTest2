@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace VZTest2.Models.View
+namespace VZTest2.Models.View.Theme
 {
     public class CreateThemeModel
     {

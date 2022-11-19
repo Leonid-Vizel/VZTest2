@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using VZTest2.Instruments;
-using VZTest2.Interfaces;
 
 namespace VZTest2.Models.Data
 {
-    public class User : IIndexable
+    public class User
     {
         [Key]
         public int Id { get; set; }

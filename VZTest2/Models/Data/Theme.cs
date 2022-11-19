@@ -5,7 +5,7 @@ namespace VZTest2.Models.Data
     public class Theme
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "Укажите название!")]
         [MinLength(3, ErrorMessage = "Минимальная длина названия - 3 символа!")]
         [MaxLength(100, ErrorMessage = "Максимальная длина названия - 100 символов!")]
