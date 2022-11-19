@@ -1,20 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace VZTest2.Models.Data
+namespace VZTest2.Models.View
 {
-    public class Theme
+    public class CreateThemeModel
     {
-        [Key]
-        public Guid Id { get; set; }
+        [DisplayName("Название")]
         [Required(ErrorMessage = "Укажите название!")]
         [MinLength(3, ErrorMessage = "Минимальная длина названия - 3 символа!")]
         [MaxLength(100, ErrorMessage = "Максимальная длина названия - 100 символов!")]
         public string Name { get; set; }
+        [DisplayName("Описание (необязательно)")]
         [MaxLength(500, ErrorMessage = "Максимальная длина описания - 500 символов!")]
         public string? Description { get; set; }
+        [DisplayName("Публичная тема (отображается в открытый списках, использовать могут все)")]
+        [Required(ErrorMessage = "Укажите публичность темы!")]
         public bool Public { get; set; }
-        public int OwnerId { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime? EditTime { get; set; } 
     }
 }

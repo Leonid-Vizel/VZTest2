@@ -103,20 +103,6 @@ namespace VZTest2.Controllers
             return View(model);
         }
         #endregion
-        #region Edit
-        [AuthFilter]
-        public IActionResult Edit()
-        {
-            return View();
-        }
-        [HttpPost]
-        [AuthFilter]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(object model)
-        {
-            return View();
-        }
-        #endregion
         #region Change Password
         [AuthFilter]
         public IActionResult ChangePassword()
@@ -127,15 +113,6 @@ namespace VZTest2.Controllers
         [AuthFilter]
         [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(object model)
-        {
-            return View();
-        }
-        #endregion
-        #region Change Avatar
-        [HttpPost]
-        [AuthFilter]
-        [ValidateAntiForgeryToken]
-        public IActionResult ChangeAvatar(int id, IFormFile avatar)
         {
             return View();
         }
