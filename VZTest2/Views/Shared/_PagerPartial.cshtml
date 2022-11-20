@@ -1,0 +1,21 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IPagedList<object>
+
+@if (Model.PageCount > 1)
+{
+    string controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    <div class="d-flex justify-content-center">
+        @Html.PagedListPager(Model, page => Url.Action(action,controller, new {page = page}),
+                            new PagedListRenderOptions {
+                            LinkToNextPageFormat = "<i class=\"bi bi-chevron-right\"></i>",
+                            LinkToPreviousPageFormat = "<i class=\"bi bi-chevron-left\"></i>",
+                            LinkToLastPageFormat = "<i class=\"bi bi-chevron-double-right\"></i>",
+                            LinkToFirstPageFormat = "<i class=\"bi bi-chevron-double-left\"></i>",
+                            UlElementClasses = new string[] { "pagination m-0" },
+                            LiElementClasses = new string[] { "page-item" },
+                            PageClasses = new string[] { "page-link" }})
+    </div>
+}

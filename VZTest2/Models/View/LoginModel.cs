@@ -13,5 +13,6 @@ namespace VZTest2.Models.View
         [MinLength(6, ErrorMessage = "Минимальный размер пароля - 6 символов!")]
         [DataType(DataType.Password, ErrorMessage = "Укажите пароль!")]
         public string Password { get; set; } = null!;
+        public string? OldUrl { get; set; }
     }
 }

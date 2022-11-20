@@ -4,15 +4,7 @@ namespace VZTest2.Controllers
 {
     public class QuestionController : Controller
     {
-        public IActionResult List()
-        {
-            return View();
-        }
-        public IActionResult Details(int id)
-        {
-            return View();
-        }
-        public IActionResult Create()
+        public IActionResult Create(int theme)
         {
             return View();
         }

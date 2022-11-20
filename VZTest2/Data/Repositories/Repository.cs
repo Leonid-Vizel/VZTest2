@@ -27,6 +27,8 @@ namespace VZTest2.Data
             => await Set.AnyAsync(predicate);
         public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
             => Set.Where(predicate);
+        public int Count(Expression<Func<T, bool>> predicate)
+            => Set.Count(predicate);
         public IQueryable<TResult> Select<TResult>(Expression<Func<T, int, TResult>> selector)
             => Set.Select(selector);
         public IOrderedQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector)

@@ -11,6 +11,7 @@ namespace VZTest2.Data.Repositories
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
+        int Count(Expression<Func<T, bool>> predicate);
         IQueryable<TResult> Select<TResult>(Expression<Func<T, int, TResult>> selector);
         IOrderedQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector);
         IOrderedQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector);

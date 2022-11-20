@@ -49,7 +49,7 @@ namespace VZTest2.Controllers
         #endregion
         #region Login
         [AuthLoader]
-        public IActionResult Login() => View();
+        public IActionResult Login(string? oldUrl = null) => View(new LoginModel() { OldUrl = oldUrl});
         [HttpPost]
         [AuthLoader]
         [ValidateAntiForgeryToken]
@@ -66,7 +66,11 @@ namespace VZTest2.Controllers
                 return View(model);
             }
             foundUser.WriteToSession(HttpContext.Session);
-            return RedirectToAction("Index", "Home");
+            if (model.OldUrl == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return Redirect(model.OldUrl);
         }
         #endregion
         #region Logout

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using VZTest2.Data.UnitOfWorks;
 using VZTest2.Filters;
 using VZTest2.Models.Data;
 using VZTest2.Models.View;
 using VZTest2.Models.View.Theme;
+using X.PagedList;
 
 namespace VZTest2.Controllers
 {
@@ -16,26 +19,43 @@ namespace VZTest2.Controllers
             _unitOfWork = unitOfWork;
         }
         [AuthFilter]
-        public async Task<IActionResult> List(bool unlock = false, bool mine = false)
+        public async Task<IActionResult> List(int page = 1, int amount = 20, bool unlock = false, bool mine = false)
         {
+            if (page <= 0)
+            {
+                page = 1;
+            }
             if (unlock && mine)
             {
-                return BadRequest();
+                    unlock = mine = true;
             }
-            List<Theme> themes = new List<Theme>();
+            IPagedList<ThemeListModel> themes;
+            int userId = HttpContext.Session.GetInt32("id") ?? 0;
             if (mine)
             {
-                int userId = HttpContext.Session.GetInt32("id") ?? 0;
-                themes = await _unitOfWork.ThemeRepository.Where(x => x.OwnerId == userId).OrderBy(x => x.Id).ToListAsync();
+                themes = await _unitOfWork.ThemeRepository.Where(x => x.OwnerId == userId).OrderBy(x => x.Id).Select(x=> new ThemeListModel(x)
+                {
+                    QuestionCount = _unitOfWork.QuestionRepository.GetSet().Count(x=>x.ThemeId == x.Id)
+                }).ToPagedListAsync(page, amount);
+                ViewData["Mode"] = "mine";
             }
             else if (unlock)
             {
-                //AllLinked
-                //themes = await _unitOfWork.ThemeRepository.Where(x => x.OwnerId == userId).OrderBy(x => x.Id).ToListAsync();
+                themes = await (from link in _unitOfWork.AccessLinkRepository.GetSet().Where(x => x.Type == AccessLinkType.Theme && x.UserId == userId)
+                                join theme in _unitOfWork.ThemeRepository.GetSet() on link.EntityId equals theme.Id
+                                select new ThemeListModel(theme)
+                                {
+                                    QuestionCount = _unitOfWork.QuestionRepository.GetSet().Count(x => x.ThemeId == x.Id)
+                                }).ToPagedListAsync(page, amount);
+                ViewData["Mode"] = "unlock";
             }
             else
             {
-                themes = await _unitOfWork.ThemeRepository.Where(x => x.Public).OrderBy(x => x.Id).ToListAsync();
+                themes = await _unitOfWork.ThemeRepository.Where(x => x.Public).OrderBy(x => x.Id).Select(x => new ThemeListModel(x)
+                {
+                    QuestionCount = _unitOfWork.QuestionRepository.GetSet().Count(x => x.ThemeId == x.Id)
+                }).ToPagedListAsync(page, amount);
+                ViewData["Mode"] = "default";
             }
             return View(themes);
         }
@@ -61,7 +81,7 @@ namespace VZTest2.Controllers
                     return Forbid();
                 }
             }
-            ThemeModel models = new ThemeModel(foundTheme)
+            ThemeModel model = new ThemeModel(foundTheme)
             {
                 Self = self,
                 Questions = await (from question in _unitOfWork.QuestionRepository.GetSet().Where(x => x.ThemeId == id)
@@ -70,7 +90,7 @@ namespace VZTest2.Controllers
                                        Options = _unitOfWork.OptionRepository.Where(x => x.QuestionId == question.Id).ToList()
                                    }).ToListAsync()
             };
-            return View();
+            return View(model);
         }
         [AuthFilter]
         public IActionResult Create()

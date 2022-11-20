@@ -11,7 +11,7 @@ namespace VZTest2.Data.UnitOfWorks
         public IRepository<StarLink> StarLinkRepository { get; set; }
         public IRepository<AccessLink> AccessLinkRepository { get; set; }
 
-        public ThemeUnitOfWork()
+        public ThemeUnitOfWork(ApplicationDbContext db) : base(db)
         {
             ThemeRepository = new Repository<Theme>(Context);
             QuestionRepository = new Repository<Question>(Context);

@@ -8,9 +8,8 @@ namespace VZTest2.Data.UnitOfWorks
     {
         public IRepository<User> UserRepository { get; set; }
 
-        public AuthUnitOfWork(ApplicationDbContext db)
+        public AuthUnitOfWork(ApplicationDbContext db) : base(db)
         {
-            Context = db;
             UserRepository = new Repository<User>(db);
         }
         public async Task MigrateAsync()

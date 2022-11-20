@@ -22,6 +22,26 @@ namespace VZTest2.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("VZTest2.Models.Data.AccessLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccessLinks");
+                });
+
             modelBuilder.Entity("VZTest2.Models.Data.Achievement", b =>
                 {
                     b.Property<int>("Id")
@@ -141,6 +161,9 @@ namespace VZTest2.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<short>("Percent")
+                        .HasColumnType("smallint");
+
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
 
@@ -182,20 +205,44 @@ namespace VZTest2.Migrations
                     b.Property<bool>("CheckRegister")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<double>("CorrectBalls")
+                        .HasColumnType("double precision");
 
-                    b.Property<Guid>("ThemeId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("ThemeId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("VZTest2.Models.Data.StarLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StarLinkType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StarLinks");
                 });
 
             modelBuilder.Entity("VZTest2.Models.Data.Test", b =>
@@ -210,8 +257,8 @@ namespace VZTest2.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("EditTime")
                         .HasColumnType("timestamp without time zone");
@@ -221,7 +268,8 @@ namespace VZTest2.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("integer");
@@ -273,23 +321,26 @@ namespace VZTest2.Migrations
 
             modelBuilder.Entity("VZTest2.Models.Data.Theme", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("EditTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("integer");

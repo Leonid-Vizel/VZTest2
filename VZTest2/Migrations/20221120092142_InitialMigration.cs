@@ -7,11 +7,55 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VZTest2.Migrations
 {
     /// <inheritdoc />
-    public partial class MainTypesMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AccessLinks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    EntityId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessLinks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AchievementLinks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    AchievementId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AchievementLinks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Achievements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    BackColor = table.Column<string>(type: "text", nullable: false),
+                    ForeColor = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Achievements", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Answers",
                 columns: table => new
@@ -68,7 +112,8 @@ namespace VZTest2.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
                     Index = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Percent = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,10 +126,11 @@ namespace VZTest2.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ThemeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
+                    ThemeId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     AnswerType = table.Column<int>(type: "integer", nullable: false),
+                    CorrectBalls = table.Column<double>(type: "double precision", nullable: false),
                     CheckRegister = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -93,13 +139,27 @@ namespace VZTest2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StarLinks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    StarLinkType = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    EntityId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StarLinks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     OwnerId = table.Column<int>(type: "integer", nullable: false),
                     Public = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
@@ -135,9 +195,10 @@ namespace VZTest2.Migrations
                 name: "Themes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     Public = table.Column<bool>(type: "boolean", nullable: false),
                     OwnerId = table.Column<int>(type: "integer", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -158,6 +219,7 @@ namespace VZTest2.Migrations
                     Login = table.Column<string>(type: "text", nullable: false),
                     AllowCreate = table.Column<bool>(type: "boolean", nullable: false),
                     Admin = table.Column<bool>(type: "boolean", nullable: false),
+                    AvatarFileName = table.Column<string>(type: "text", nullable: true),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     RegisterTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -170,6 +232,15 @@ namespace VZTest2.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AccessLinks");
+
+            migrationBuilder.DropTable(
+                name: "AchievementLinks");
+
+            migrationBuilder.DropTable(
+                name: "Achievements");
+
             migrationBuilder.DropTable(
                 name: "Answers");
 
@@ -184,6 +255,9 @@ namespace VZTest2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "StarLinks");
 
             migrationBuilder.DropTable(
                 name: "Tests");
