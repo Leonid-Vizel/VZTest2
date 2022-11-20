@@ -1,5 +1,113 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using VZTest2.Models.Data;
+@using VZTest2.Models.View.Theme;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model ThemeModel
 @{
+    ViewData["Title"] = $"Тема “{Model.Name}”";
+    var pager = Html.PagedListPager(Model.Questions, page => Url.Action("Details", "Theme", new { page = page, id = Model.Id }),
+                            new PagedListRenderOptions
+                                    {
+                                        LinkToNextPageFormat = "<i class=\"bi bi-chevron-right\"></i>",
+                                        LinkToPreviousPageFormat = "<i class=\"bi bi-chevron-left\"></i>",
+                                        LinkToLastPageFormat = "<i class=\"bi bi-chevron-double-right\"></i>",
+                                        LinkToFirstPageFormat = "<i class=\"bi bi-chevron-double-left\"></i>",
+                                        UlElementClasses = new string[] { "pagination m-0" },
+                                        LiElementClasses = new string[] { "page-item" },
+                                        PageClasses = new string[] { "page-link" }
+                                    });
 }
+<section>
+    <partial name="_ShadeHeaderPartial" />
+    <div class="row">
+        <div class="col-12">
+            <h5><b>Название:</b> @Model.Name</h5>
+            <h5><b>Описание:</b> @Model.Description</h5>
+            <h5><b>Публичность:</b> @(Model.Public ? "Публичная" : "Приватная")</h5>
+            <h5>
+                <b>Создатель:</b> 
+                @if (Model.OwnerName != "Пользователь не найден")
+                {
+                    <a asp-controller="Auth" asp-action="Profile" asp-route-id="@Model.OwnerId">@Model.OwnerName</a>
+                }
+                else
+                {
+                    @: @Model.OwnerName
+                }
+            </h5>
+            <h5><b>Создан:</b>@Model.CreateTime.ToString("dd.MM.yyyy")</h5>
+            @if (Model.EditTime != null)
+            {
+                <h5><b>Изменён:</b> @Model.EditTime?.ToString("dd.MM.yyyy")</h5>
+            }
+            @if (Model.Self)
+            {
+                <div class="row">
+                    <div class="col-6">
+                        <a class="btn btn-warning w-100" asp-controller="Theme" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+                    </div>
+                    <form asp-controller="Theme" asp-action="Delete" asp-route-id="@Model.Id" class="col-6">
+                        <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Вы уверены?')">Удалить</button>
+                    </form>
+                </div>
+            }
+            <hr>
+            <div>
+                @if (Model.Self)
+                {
+                    <div class="row justify-content-end">
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                            <h2 class="text-center">Вопросы темы</h2>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-4">
+                            <a class="btn btn-success w-100" asp-controller="Question" asp-action="Create" asp-route-theme="@Model.Id">Добавить</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <h2 class="text-center">Вопросы темы</h2>
+                }
+                @if (Model.Questions.PageCount > 1)
+                {
+                    <div class="d-flex justify-content-center mb-2">
+                        @pager
+                    </div>
+                }
+                <div>
+                    @foreach (Question question in Model.Questions)
+                    {
+                        <hr class="mt-0 mb-0">
+                        <div class="mb-2">
+                            @if (Model.Self)
+                            {
+                                <h3><a asp-controller="Question" asp-action="Preview" asp-route-id="@question.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Предпросмотр вопроса">@question.Title</a></h3>
+                            }
+                            else
+                            {
+                                <h3>@question.Title</h3>
+                            }
+                            <h5 class="mt-0 mb-1"><b>Тип ответа:</b> @question.GetAnswerTypeName()</h5>
+                            @if (question.Description != null)
+                            {
+                                <p class="form-text mb-0 mt-0">@question.Description</p>
+                            }
+                            @if (Model.Self)
+                            {
+                                <a class="btn btn-warning" asp-controller="Question" asp-action="Edit" asp-route-id="@question.Id">Редактировать</a>
+                                <a class="btn btn-danger" asp-controller="Question" asp-action="Delete" asp-route-id="@question.Id">Удалить</a>
+                            }
+                        </div>
+                    }
+                    <hr class="mt-0 mb-0">
+                </div>
+                @if (Model.Questions.PageCount > 1)
+                {
+                    <div class="d-flex justify-content-center mt-2">
+                        @pager
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

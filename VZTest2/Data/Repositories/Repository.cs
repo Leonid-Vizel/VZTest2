@@ -25,16 +25,8 @@ namespace VZTest2.Data
             => Set;
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
             => await Set.AnyAsync(predicate);
-        public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
-            => Set.Where(predicate);
         public int Count(Expression<Func<T, bool>> predicate)
             => Set.Count(predicate);
-        public IQueryable<TResult> Select<TResult>(Expression<Func<T, int, TResult>> selector)
-            => Set.Select(selector);
-        public IOrderedQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector)
-        => Set.OrderBy(keySelector);
-        public IOrderedQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector)
-        => Set.OrderByDescending(keySelector);
         public void Remove(T value)
             => Set.Remove(value);
         public void Update(T value)

@@ -1,29 +1,25 @@
-﻿@using VZTest2.Models.View.Theme;
+﻿@using VZTest2.Instruments;
+@using VZTest2.Models.View.Theme;
 @using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
 @model IPagedList<ThemeListModel>
 @{
     string mode = (ViewData["Mode"] as string) ?? "default";
-    if (mode.Equals("default"))
-    {
-        ViewData["Title"] = "Список публичных тем";
-    }
-    else if (mode.Equals("mine"))
-    {
-        ViewData["Title"] = "Список ваших тем";
-    }
-    else
-    {
-        ViewData["Title"] = "Список открытых вам тем";
-    }
+    ViewData["Title"] = mode.Equals("default") ? "Список публичных тем" : mode.Equals("mine") ? "Список ваших тем" : "Список открытых вам тем";
+    var pager = Html.PagedListPager(Model, page => Url.Action("List", "Theme", new { page = page, mine = mode.Equals("mine"), unlock = mode.Equals("unlock") }), DefaultParams.DefaultPagedListRenderOptions);
 }
 
 <section>
     <partial name="_ShadeHeaderPartial" />
     <div class="row">
         <div class="col-12">
-            <div class="mb-2">
-                <partial name="_PagerPartial" model="Model" />
-            </div>
+            @if (Model.PageCount > 1)
+            {
+                <div class="d-flex justify-content-center mb-2">
+                    @pager
+                </div>
+            }
             @foreach (ThemeListModel theme in Model)
             {
                 <hr class="mb-0 mt-0">
@@ -43,9 +39,12 @@
                 </div>
             }
             <hr class="mb-0 mt-0">
-            <div class="mt-2">
-                <partial name="_PagerPartial" model="Model" />
-            </div>
+            @if (Model.PageCount > 1)
+            {
+                <div class="d-flex justify-content-center mt-2">
+                    @pager
+                </div>
+            }
         </div>
     </div>
 </section>

@@ -5,6 +5,7 @@ namespace VZTest2.Data.UnitOfWorks
 {
     public class ThemeUnitOfWork : DefaultUnitOfWork, IThemeUnitOfWork
     {
+        public IRepository<User> UserRepository { get; set; }
         public IRepository<Theme> ThemeRepository { get; set; }
         public IRepository<Question> QuestionRepository { get; set; }
         public IRepository<Option> OptionRepository { get; set; }
@@ -13,6 +14,7 @@ namespace VZTest2.Data.UnitOfWorks
 
         public ThemeUnitOfWork(ApplicationDbContext db) : base(db)
         {
+            UserRepository = new Repository<User>(Context);
             ThemeRepository = new Repository<Theme>(Context);
             QuestionRepository = new Repository<Question>(Context);
             OptionRepository = new Repository<Option>(Context);

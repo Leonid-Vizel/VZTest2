@@ -13,7 +13,7 @@ namespace VZTest2.Models.View.Theme
         [DisplayName("Описание (необязательно)")]
         [MaxLength(500, ErrorMessage = "Максимальная длина описания - 500 символов!")]
         public string? Description { get; set; }
-        [DisplayName("Публичная тема (отображается в открытый списках, использовать могут все)")]
+        [DisplayName("Публичность темы")]
         [Required(ErrorMessage = "Укажите публичность темы!")]
         public bool Public { get; set; }
     }

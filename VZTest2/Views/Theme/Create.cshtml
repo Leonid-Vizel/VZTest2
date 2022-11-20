@@ -1,5 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using VZTest2.Models.View.Theme;
+@model CreateThemeModel
 @{
+    ViewData["Title"] = "Созданите темы";
+}
+<section>
+    <partial name="_ShadeHeaderPartial" />
+    <div class="row justify-content-center">
+        <form method="post" class="col-lg-9 col-md-10 col-sm-11 col-12">
+            <div class="mb-1">
+                <label class="form-label" asp-for="Name"></label>
+                <input class="form-control" asp-for="Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="mb-1">
+                <label class="form-label" asp-for="Description"></label>
+                <textarea class="form-control w-100" asp-for="Description"></textarea>
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Public"></label>
+                <select class="form-select" asp-for="Public">
+                    <option value="true">Публичная</option>
+                    <option value="false">Приватная</option>
+                </select>
+                <span class="text-danger" asp-validation-for="Public"></span>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Создать</button>
+        </form>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
 }

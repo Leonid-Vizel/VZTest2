@@ -5,6 +5,7 @@ namespace VZTest2.Data.UnitOfWorks
 {
     public interface IThemeUnitOfWork : IDefaultUnitOfWork
     {
+        IRepository<User> UserRepository { get; set; }
         IRepository<Theme> ThemeRepository { get; set; }
         IRepository<Question> QuestionRepository { get; set; }
         IRepository<Option> OptionRepository { get; set; }

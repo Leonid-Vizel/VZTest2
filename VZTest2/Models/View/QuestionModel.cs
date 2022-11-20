@@ -15,6 +15,7 @@ namespace VZTest2.Models.View
             CorrectBalls = question.CorrectBalls;
             CheckRegister = question.CheckRegister;
         }
+        public QuestionModel() { }
         public List<Option>? Options { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+﻿.avatar-box {
+    width: 160px;
+}
+
+.avatar {
+    height: 200px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+@media (max-width: 575px) {
+    .w-xs-100 {
+        width: 100% !important;
+    }
+}
