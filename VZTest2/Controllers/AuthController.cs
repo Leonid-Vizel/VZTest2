@@ -4,7 +4,7 @@ using VZTest2.Data.UnitOfWorks;
 using VZTest2.Filters;
 using VZTest2.Instruments;
 using VZTest2.Models.Data;
-using VZTest2.Models.View;
+using VZTest2.Models.View.Auth;
 
 namespace VZTest2.Controllers
 {

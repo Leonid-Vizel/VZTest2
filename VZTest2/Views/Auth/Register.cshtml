@@ -1,4 +1,5 @@
 ﻿@using VZTest2.Models.View;
+@using VZTest2.Models.View.Auth;
 @model RegisterModel
 @{
     ViewData["title"] = "Регистрация";
@@ -27,3 +28,7 @@
         </form>
     </div>
 </setion>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

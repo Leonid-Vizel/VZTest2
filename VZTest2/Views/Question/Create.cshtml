@@ -1,0 +1,209 @@
+﻿@using VZTest2.Models.Data;
+@using VZTest2.Models.View.Question;
+@model CreateQuestionModel
+@{
+    ViewData["Title"] = "Создание вопроса";
+}
+
+<script>
+    let currentType = @(Model == null ? 0 : (int)Model.AnswerType);
+    let radioBlock = undefined;
+    let checkBlock = undefined;
+    let SelectBlockOptions = undefined;
+    let SelectBlockOptionsButton = undefined;
+
+    function OnSelectType(type) {
+        if (type == currentType) {
+            return;
+        }
+        if (SelectBlockOptions == undefined || SelectBlockOptionsButton == undefined) {
+            SelectBlockOptions = document.getElementById(`select-block-options`);
+            SelectBlockOptionsButton = document.getElementById(`select-block-options-button`);
+        }
+        let currentElement = document.getElementById(`select-block-${currentType}`);
+        let newElement = document.getElementById(`select-block-${type}`);
+        if (currentElement != undefined && currentElement != null) {
+            currentElement.setAttribute('hidden', 'hidden');
+        }
+        if (newElement != undefined && newElement != null) {
+            newElement.removeAttribute('hidden');
+        }
+        if (currentType == 6 && (type == 4 || type == 5)) {
+            let options = document.getElementsByName('OptionAnswer');
+            for (let i = 0; i < options.length; i++) {
+                options[i].setAttribute('type', 'radio');
+            }
+            SelectBlockOptionsButton.setAttribute('onclick', "AddOption('radio')");
+        }
+        else if (type == 6 && (currentType == 4 || currentType == 5)) {
+            let options = document.getElementsByName('OptionAnswer');
+            for (let i = 0; i < options.length; i++) {
+                options[i].setAttribute('type', 'checkbox');
+            }
+            SelectBlockOptionsButton.setAttribute('onclick', "AddOption('check')");
+        }
+        else if (currentType <= 3 && type > 3) {
+            SelectBlockOptions.removeAttribute('hidden');
+            if (type == 4 || type == 5) {
+                SelectBlockOptionsButton.setAttribute('onclick', "AddOption('radio')");
+            }
+            else {
+                SelectBlockOptionsButton.setAttribute('onclick', "AddOption('check')");
+            }
+        }
+        else if (type <= 3 && currentType > 3) {
+            SelectBlockOptions.setAttribute('hidden', 'hidden');
+        }
+        currentType = type;
+    }
+
+    function AddOption(type) {
+        if (radioBlock == undefined || checkBlock == undefined) {
+            radioBlock = document.getElementById('OptionBlockRadio');
+            checkBlock = document.getElementById('OptionBlockCheck');
+        }
+        let node = undefined;
+        if (type == 'radio') {
+            node = radioBlock.cloneNode(true).childNodes[1];
+        }
+        else {
+            node = checkBlock.cloneNode(true).childNodes[1];
+        }
+        node.setAttribute('id', '123');
+        node.childNodes[1].childNodes[1].setAttribute('name', 'OptionAnswer');
+        SelectBlockOptionsButton.insertAdjacentElement('afterend', node);
+    }
+
+    function Submit() {
+        var sendDictionary = {};
+        sendDictionary['Title'] = document.getElementById('Title').value;
+        sendDictionary['Description'] = document.getElementById('Description').value;
+        sendDictionary['CorrectBalls'] = document.getElementById('CorrectBalls').value;
+        let type = document.getElementById('AnswerType').value;
+        sendDictionary['AnswerType'] = type;
+        let options = undefined;
+        switch (type) {
+            case '0':
+                sendDictionary['CorrectText'] = document.getElementById('CorrectText').value;
+                sendDictionary['CheckRegister'] = document.getElementById('CheckRegister').value;
+                break;
+            case '1':
+                sendDictionary['CorrectInt'] = document.getElementById('CorrectInt').value;
+                break;
+            case '2':
+                sendDictionary['CorrectDouble'] = document.getElementById('CorrectDouble').value;
+                break;
+            case '3':
+                sendDictionary['CorrectDate'] = document.getElementById('CorrectDate').value;
+                break;
+            case '4':
+            case '5':
+                options = document.getElementsByName('OptionAnswer');
+                for (let i = 0; i < options.length; i++) {
+                    sendDictionary[`Options[${i}].Correct`] = options[i].checked;
+                    sendDictionary[`Options[${i}].Name`] = options[i].parentNode.parentNode.childNodes[3].value;
+                }
+                break;
+            case '6':
+                options = document.getElementsByName('OptionAnswer');
+                for (let i = 0; i < options.length; i++) {
+                    sendDictionary[`Options[${i}].Correct`] = options[i].checked;
+                    sendDictionary[`Options[${i}].Name`] = options[i].parentNode.parentNode.childNodes[3].value;
+                }
+                break;
+        }
+        console.log(sendDictionary);
+        return false;
+    }
+</script>
+
+<div id="OptionBlockRadio" hidden>
+    <div class="input-group mt-2">
+        <div class="input-group-text">
+            <input id="OptionBlockRadioInput" class="form-check-input mt-0" type="radio">
+        </div>
+        <input type="text" class="form-control">
+        <button class="btn btn-danger" type="button" onclick="this.parentNode.remove()">Удалить</button>
+    </div>
+</div>
+<div id="OptionBlockCheck" hidden>
+    <div class="input-group mt-2">
+        <div class="input-group-text">
+            <input id="OptionBlockCheckInput" class="form-check-input mt-0" type="checkbox">
+        </div>
+        <input type="text" class="form-control">
+        <button class="btn btn-danger" type="button" onclick="this.parentNode.remove()">Удалить</button>
+    </div>
+</div>
+
+<section>
+    <partial name="_ShadeHeaderPartial" />
+    <div class="row justify-content-center">
+        <form class="col-lg-9 col-md-10 col-sm-11 col-12">
+            <div class="mb-1">
+                <label class="form-label" asp-for="Title"></label>
+                <input class="form-control" asp-for="Title">
+                <span class="text-danger" asp-validation-for="Title"></span>
+            </div>
+            <div class="mb-1">
+                <label class="form-label" asp-for="Description"></label>
+                <textarea class="form-control w-100" asp-for="Description"></textarea>
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="mb-1">
+                <label class="form-label" asp-for="CorrectBalls"></label>
+                <input class="form-control w-100" asp-for="CorrectBalls">
+                <span class="text-danger" asp-validation-for="CorrectBalls"></span>
+            </div>
+            <div class="mb-1">
+                <label class="form-label" asp-for="AnswerType"></label>
+                <select class="form-select" asp-for="AnswerType" onchange="OnSelectType(this.value)">
+                    <option value="0">Текстовый</option>
+                    <option value="1">Целочисленный</option>
+                    <option value="2">Десятичная дробь</option>
+                    <option value="3">Дата</option>
+                    <option value="4">Радио-кнопки</option>
+                    <option value="5">Выпадающий список</option>
+                    <option value="6">Галочки</option>
+                </select>
+                <span class="text-danger" asp-validation-for="AnswerType"></span>
+            </div>
+            <div class="mb-3" id="select-block-0" @(Model == null || Model.AnswerType == AnswerType.Text ? null : "hidden")>
+                <label class="form-label" asp-for="CorrectText"></label>
+                <input class="form-control w-100" asp-for="CorrectText">
+                <span class="text-danger" asp-validation-for="CorrectText"></span>
+                <div class="mt-1">
+                    <label class="form-label" asp-for="CheckRegister"></label>
+                    <select class="form-select" asp-for="CheckRegister">
+                        <option value="true">Учитывать</option>
+                        <option value="false">Не учитывать</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="CheckRegister"></span>
+                </div>
+            </div>
+            <div class="mb-3" id="select-block-1" @(Model != null && Model.AnswerType == AnswerType.Int ? null : "hidden")>
+                <label class="form-label" asp-for="CorrectInt"></label>
+                <input class="form-control w-100" asp-for="CorrectInt">
+                <span class="text-danger" asp-validation-for="CorrectInt"></span>
+            </div>
+            <div class="mb-3" id="select-block-2" @(Model != null && Model.AnswerType == AnswerType.Double ? null : "hidden")>
+                <label class="form-label" asp-for="CorrectDouble"></label>
+                <input class="form-control w-100" type="number" asp-for="CorrectDouble">
+                <span class="text-danger" asp-validation-for="CorrectDouble"></span>
+            </div>
+            <div class="mb-3" id="select-block-3" @(Model != null && Model.AnswerType == AnswerType.Date ? null : "hidden")>
+                <label class="form-label" asp-for="CorrectDate"></label>
+                <input class="form-control w-100" type="date" asp-for="CorrectDate">
+                <span class="text-danger" asp-validation-for="CorrectDate"></span>
+            </div>
+            <div id="select-block-options" class="mb-3 mt-2" @(Model != null && (Model.AnswerType == AnswerType.Radio || Model.AnswerType == AnswerType.Select || Model.AnswerType == AnswerType.Check) ? null : "hidden")>
+                <a id="select-block-options-button" class="btn btn-info w-100" role="button" onclick="AddOption('radio')">Добавить опцию</a>
+            </div>
+            <button type="submit" class="btn btn-success w-100" onclick="return Submit()">Создать</button>
+        </form>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

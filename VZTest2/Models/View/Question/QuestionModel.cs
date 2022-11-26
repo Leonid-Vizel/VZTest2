@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using VZTest2.Models.Data;
+﻿using VZTest2.Models.Data;
 
-namespace VZTest2.Models.View
+namespace VZTest2.Models.View.Question
 {
-    public class QuestionModel : Question
+    public class QuestionModel : Data.Question
     {
-        public QuestionModel(Question question)
+        public QuestionModel(Data.Question question)
         {
             Id = question.Id;
             ThemeId = question.ThemeId;

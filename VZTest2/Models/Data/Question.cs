@@ -13,12 +13,17 @@ namespace VZTest2.Models.Data
         public string Title { get; set; }
         [MaxLength(500, ErrorMessage = "Максимальная длина описания - 500 символов!")]
         public string? Description { get; set; }
+        [Required(ErrorMessage = "Укажите тип вопроса!")]
+        [Range(0, 6, ErrorMessage = "Укажите тип вопроса!")]
         public AnswerType AnswerType { get; set; }
         [Range(0,1000000, ErrorMessage = "Количество баллов за вопрос должно быть между 0 и 1000000")]
         public double CorrectBalls { get; set; }
+        [MaxLength(2000, ErrorMessage = "Максимальная длина приавильного ответа - 2000 символов")]
         public string? CorrectText { get; set; }
+        [Range(int.MinValue, int.MaxValue, ErrorMessage = "Укажите значение от -2147483647 до 2147483647!")]
         public int? CorrectInt { get; set; }
-        public Double? CorrectDouble { get; set; }
+        [Range(double.MinValue, double.MaxValue, ErrorMessage = "Укажите корректное значение!")]
+        public double? CorrectDouble { get; set; }
         public DateTime? CorrectDate { get; set; }
         public bool CheckRegister { get; set; } //Only for text
 
@@ -35,10 +40,11 @@ namespace VZTest2.Models.Data
                 case AnswerType.Date:
                     return "Дата";
                 case AnswerType.Radio:
+                    return "Радио-кнопки";
                 case AnswerType.Select:
-                    return "Выбор 1 правильного";
+                    return "Выпадающее меню";
                 case AnswerType.Check:
-                    return "Выбор нескольких правильных";
+                    return "Галочки";
                 default:
                     return null;
             }

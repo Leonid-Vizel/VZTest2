@@ -1,5 +1,4 @@
-﻿using VZTest2.Models.Data;
-using X.PagedList;
+﻿using X.PagedList;
 
 namespace VZTest2.Models.View.Theme
 {
@@ -16,7 +15,7 @@ namespace VZTest2.Models.View.Theme
             EditTime = theme.EditTime;
         }
 
-        public IPagedList<Question> Questions { get; set; }
+        public IPagedList<Data.Question> Questions { get; set; }
         public string OwnerName { get; set; }
         public bool Self { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using VZTest2.Models.Data;
 
-namespace VZTest2.Models.View
+namespace VZTest2.Models.View.Auth
 {
     public class ProfileModel
     {

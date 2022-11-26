@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VZTest2.Data.UnitOfWorks;
 using VZTest2.Filters;
 using VZTest2.Instruments;
@@ -16,6 +15,7 @@ namespace VZTest2.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        #region List
         [AuthFilter]
         public async Task<IActionResult> List(int page = 1, int amount = 20, bool unlock = false, bool mine = false)
         {
@@ -57,6 +57,8 @@ namespace VZTest2.Controllers
             }
             return View(themes);
         }
+        #endregion
+        #region Details
         [AuthFilter]
         public async Task<IActionResult> Details(int id, int page = 1, int amount = 20)
         {
@@ -79,6 +81,8 @@ namespace VZTest2.Controllers
             };
             return View(model);
         }
+        #endregion
+        #region Create
         [AuthFilter]
         public IActionResult Create()
         {
@@ -109,6 +113,8 @@ namespace VZTest2.Controllers
             await _unitOfWork.SaveAsync();
             return RedirectToAction("Details", "Theme", new { Id = theme.Id });
         }
+        #endregion
+        #region Edit
         [AuthFilter]
         public async Task<IActionResult> Edit(int id)
         {
@@ -163,6 +169,8 @@ namespace VZTest2.Controllers
             await _unitOfWork.SaveAsync();
             return RedirectToAction("Details", "Theme", new { Id = foundTheme.Id });
         }
+        #endregion
+        #region Delete
         [AuthFilter]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -188,5 +196,6 @@ namespace VZTest2.Controllers
             await _unitOfWork.SaveAsync();
             return RedirectToAction("List", "Theme");
         }
+        #endregion
     }
 }
